@@ -23,14 +23,15 @@ from pyticle.swarm_optimization import SwarmOptimization
 optimizer = SwarmOptimization(cost_func=my_func, particle_num=100, omega_start=1, omega_end=0.0,
  coef=[2.0, 2.0], low_bound=-15.0, high_bound=10,
  boundary_strategy='random', var_size=2, max_iter_num=80, elite_rate=0.1)
+optimizer.optimize()
 ```
 
 ## Demo
 
 In this section, you can see the results of using this package for two simple 2D benchmarks. To run the benchmarks, run:
 ```python
-from pyticle.run_demo import run_demo
-run_demo()
+from pyticle.demo_run import demo_run
+demo_run()
 ```
 
 ### The Sphere Function
