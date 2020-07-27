@@ -20,9 +20,7 @@ pip install pyticle
 To minimize the 2D function `my_func` in range [-15, 10] using 100 particles via 80 iterations:
 ```python
 from pyticle.swarm_optimization import SwarmOptimization
-optimizer = SwarmOptimization(cost_func=my_func, particle_num=100, omega_start=1, omega_end=0.0,
- coef=[2.0, 2.0], low_bound=-15.0, high_bound=10,
- boundary_strategy='random', var_size=2, max_iter_num=80, elite_rate=0.1)
+optimizer = SwarmOptimization(cost_func=my_func, particle_num=100, omega_start=1, omega_end=0.0, coef=[2.0, 2.0], low_bound=-15.0, high_bound=10, boundary_strategy='random', var_size=2, max_iter_num=80, elite_rate=0.1)
 optimizer.optimize()
 ```
 
