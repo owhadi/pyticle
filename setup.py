@@ -8,7 +8,7 @@ with open('requirements.txt', 'r') as file:
 
 setuptools.setup(
     name='pyticle',
-    version='0.0.1',
+    version='0.0.2',
     author='Moein Owhadi Kareshk',
     author_email='moein.owhadi@gmail.com',
     description='A Python Library for Particle Swarm Intelligence',
