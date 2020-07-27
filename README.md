@@ -11,7 +11,7 @@ towards the global/local minimum in each iteration.
 
 ## Installation
 Simply install this package by running the following command:
- ```bash
+```bash
 pip install pyticle 
 ```
 
