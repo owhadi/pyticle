@@ -4,10 +4,20 @@ from pyticle.particle import Particle
 
 
 class SwarmOptimization:
-
-    def __init__(self, cost_func: object, particle_num: int, omega_start: float, omega_end: float, coef: list,
-                 low_bound: float, high_bound: float, boundary_strategy: str, var_size: int, max_iter_num: int,
-                 elite_rate: float):
+    def __init__(
+        self,
+        cost_func: object,
+        particle_num: int,
+        omega_start: float,
+        omega_end: float,
+        coef: list,
+        low_bound: float,
+        high_bound: float,
+        boundary_strategy: str,
+        var_size: int,
+        max_iter_num: int,
+        elite_rate: float,
+    ):
         """
         implements the Particle Swarm Intelligence class
         :param cost_func: the cost function to minimize
@@ -26,7 +36,9 @@ class SwarmOptimization:
         # vars
         self.cost_func = cost_func
         self.particle_num = particle_num
-        self.omega_schedule = np.linspace(omega_start, omega_end, max_iter_num, endpoint=True)
+        self.omega_schedule = np.linspace(
+            omega_start, omega_end, max_iter_num, endpoint=True
+        )
         self.coef = coef
         self.low_bound = low_bound
         self.high_bound = high_bound
@@ -37,7 +49,10 @@ class SwarmOptimization:
         self.elimination_rate = 1 - elite_rate
         self.global_best_position = None
         self.global_best_fitness = np.inf
-        self.particles = [Particle(self.low_bound, self.high_bound, self.var_size) for i in range(self.particle_num)]
+        self.particles = [
+            Particle(self.low_bound, self.high_bound, self.var_size)
+            for i in range(self.particle_num)
+        ]
 
         # fitness and global best
         for i in range(self.particle_num):
@@ -91,12 +106,12 @@ class SwarmOptimization:
 
         # no update for the global best
         elite_limit = np.quantile(self.get_particles_fitness(), self.elite_rate)
-        distance_to_global_best = np.abs(self.particles[particle_index].fitness - self.global_best_fitness)
+        distance_to_global_best = np.abs(
+            self.particles[particle_index].fitness - self.global_best_fitness
+        )
         if distance_to_global_best > elite_limit:
             self.update_particle_vel(particle_index, iter_num)
             self.update_particle_position(particle_index)
-
-
 
     def update_particle_vel(self, particle_index: int, iter_num: int):
         """
@@ -107,12 +122,15 @@ class SwarmOptimization:
 
         r = np.random.uniform(low=0.0, high=1.0, size=2)
         omega = self.omega_schedule[iter_num]
-        vel = omega * self.particles[particle_index].velocity \
-              + self.coef[0] * r[0] * self.particles[particle_index].particle_best_position \
-              + self.coef[1] * r[1] * self.global_best_position
+        vel = (
+            omega * self.particles[particle_index].velocity
+            + self.coef[0]
+            * r[0]
+            * self.particles[particle_index].particle_best_position
+            + self.coef[1] * r[1] * self.global_best_position
+        )
 
         self.particles[particle_index].velocity = vel
-
 
     def update_particle_position(self, particle_index: int):
         """
@@ -121,8 +139,14 @@ class SwarmOptimization:
         """
 
         # choose the best direction to move
-        p1 = self.particles[particle_index].position + self.particles[particle_index].velocity
-        p2 = self.particles[particle_index].position - self.particles[particle_index].velocity
+        p1 = (
+            self.particles[particle_index].position
+            + self.particles[particle_index].velocity
+        )
+        p2 = (
+            self.particles[particle_index].position
+            - self.particles[particle_index].velocity
+        )
 
         if self.get_out_range_dim_num(p1) < self.get_out_range_dim_num(p2):
             self.particles[particle_index].position = p1
@@ -138,31 +162,47 @@ class SwarmOptimization:
             if self.low_bound <= dim_value <= self.high_bound:
                 continue
 
-            if self.boundary_strategy == 'random':
-                    dim_new_value = np.random.uniform(low=self.low_bound, high=self.high_bound, size=1)
-            elif self.boundary_strategy == 'clipping':
+            if self.boundary_strategy == "random":
+                dim_new_value = np.random.uniform(
+                    low=self.low_bound, high=self.high_bound, size=1
+                )
+            elif self.boundary_strategy == "clipping":
                 if dim_value < self.low_bound:
                     dim_new_value = self.low_bound
                 if dim_value > self.high_bound:
                     dim_new_value = self.high_bound
             else:
-                raise Exception(f'{self.boundary_strategy} is a unknown boundary strategy')
+                raise Exception(
+                    f"{self.boundary_strategy} is a unknown boundary strategy"
+                )
 
             self.particles[particle_index].position[dim] = dim_new_value
 
         # reset weak particles
-        if self.particles[particle_index].fitness > np.quantile(self.get_particles_fitness(), self.elimination_rate):
+        if self.particles[particle_index].fitness > np.quantile(
+            self.get_particles_fitness(), self.elimination_rate
+        ):
             mean_point = (self.high_bound - self.low_bound) / 2
-            self.particles[particle_index].position = 0.5 * (self.particles[particle_index].particle_best_position
-                                                             + self.global_best_position
-                                                             + np.random.normal(0.0, np.sqrt(mean_point),
-                                                                                size=self.var_size))
-        self.particles[particle_index].fitness = self.cost_func(self.particles[particle_index].position)
+            self.particles[particle_index].position = 0.5 * (
+                self.particles[particle_index].particle_best_position
+                + self.global_best_position
+                + np.random.normal(0.0, np.sqrt(mean_point), size=self.var_size)
+            )
+        self.particles[particle_index].fitness = self.cost_func(
+            self.particles[particle_index].position
+        )
 
         # update particle best
-        if self.particles[particle_index].fitness < self.particles[particle_index].particle_best_fitness:
-            self.particles[particle_index].particle_best_position = self.particles[particle_index].position
-            self.particles[particle_index].particle_best_fitness = self.particles[particle_index].fitness
+        if (
+            self.particles[particle_index].fitness
+            < self.particles[particle_index].particle_best_fitness
+        ):
+            self.particles[particle_index].particle_best_position = self.particles[
+                particle_index
+            ].position
+            self.particles[particle_index].particle_best_fitness = self.particles[
+                particle_index
+            ].fitness
 
         # update global best
         if self.particles[particle_index].fitness < self.global_best_fitness:
@@ -204,4 +244,9 @@ class SwarmOptimization:
         counts the number of dimensions of a position that are out of range
         :param position: the particle's position
         """
-        return np.sum([0 if self.low_bound <= position[dim] <= self.high_bound else 1 for dim in range(self.var_size)])
+        return np.sum(
+            [
+                0 if self.low_bound <= position[dim] <= self.high_bound else 1
+                for dim in range(self.var_size)
+            ]
+        )

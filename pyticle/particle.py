@@ -2,7 +2,6 @@ import numpy as np
 
 
 class Particle:
-
     def __init__(self, low_bound: float, high_bound: float, var_size: int):
         """
         implements the Particle class
@@ -14,5 +13,7 @@ class Particle:
         self.particle_best_position = self.position
         self.particle_best_fitness = np.inf
         range_bound = high_bound - low_bound
-        self.velocity = np.random.uniform(low=-range_bound, high=range_bound, size=var_size)
+        self.velocity = np.random.uniform(
+            low=-range_bound, high=range_bound, size=var_size
+        )
         self.fitness = np.inf
