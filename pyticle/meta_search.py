@@ -15,7 +15,7 @@ class MetaSearch:
         self.low_bound = low_bound
         self.high_bound = high_bound
 
-    def search(self, try_num=2):
+    def search(self, try_num=2, n_jobs=10):
 
         input_list = []
         result_list = []
@@ -47,7 +47,7 @@ class MetaSearch:
             )
             input_list.append(inp)
 
-        result_list = Parallel(n_jobs=10)(
+        result_list = Parallel(n_jobs=n_jobs)(
             delayed(self.optimization_iter)(**inp) for inp in input_list
         )
         result = pd.DataFrame(result_list).sort_values(by="obj_val")
