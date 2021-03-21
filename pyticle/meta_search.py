@@ -9,8 +9,8 @@ from pyticle.swarm_optimization import SwarmOptimization
 
 
 class MetaSearch:
-    def __init__(self, my_func, var_size, low_bound, high_bound):
-        self.my_func = my_func
+    def __init__(self, cost_func, var_size, low_bound, high_bound):
+        self.cost_func = cost_func
         self.var_size = var_size
         self.low_bound = low_bound
         self.high_bound = high_bound
@@ -20,7 +20,7 @@ class MetaSearch:
         input_list = []
         result_list = []
 
-        for i in range(5):
+        for i in range(try_num):
 
             np.random.seed(i)
 
@@ -33,7 +33,7 @@ class MetaSearch:
             er = np.random.rand() * 0.2
 
             inp = dict(
-                cost_func=self.my_func,
+                cost_func=self.cost_func,
                 particle_num=pn,
                 omega_start=os,
                 omega_end=oe,
@@ -50,8 +50,8 @@ class MetaSearch:
         result_list = Parallel(n_jobs=n_jobs)(
             delayed(self.optimization_iter)(**inp) for inp in input_list
         )
-        result = pd.DataFrame(result_list).sort_values(by="obj_val")
-        print(result)
+        return pd.DataFrame(result_list).sort_values(by="obj_val")
+        
 
     def optimization_iter(self, **kwargs):
 
@@ -72,7 +72,3 @@ class MetaSearch:
         output.pop("cost_func")
 
         return output
-
-
-ms = MetaSearch(Benchmark.ackley, 2, -32, 32)
-ms.search(try_num=50)

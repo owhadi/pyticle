@@ -18,17 +18,35 @@ pip install pyticle
 ## Usage
 
 To minimize the 2D function `my_func` in range [-15, 10] using 100 particles via 80 iterations:
+
 ```python
+from pyticle.benchmark import Benchmark
 from pyticle.swarm_optimization import SwarmOptimization
-optimizer = SwarmOptimization(cost_func=my_func, particle_num=100, omega_start=1, omega_end=0.0, coef=[2.0, 2.0], 
+optimizer = SwarmOptimization(cost_func=Benchmark.ackley, particle_num=100, omega_start=1, omega_end=0.0, coef=[2.0, 2.0], 
                               low_bound=-15.0, high_bound=10, boundary_strategy='random', var_size=2, max_iter_num=80, 
                               elite_rate=0.1)
 optimizer.optimize()
 ```
 
+## Meta-Search
+Meta-search means searching for the right hyper-parameters of the optimizer. Here is a simple example of using the `MetaSearch` class:
+
+```python
+from tabulate import tabulate
+
+from pyticle.benchmark import Benchmark
+from pyticle.meta_search import MetaSearch
+
+ms = MetaSearch(cost_func=Benchmark.ackley, var_size=2, low_bound=-32, high_bound=32)
+result = ms.search(try_num=8, n_jobs=8)
+print(tabulate(result, headers='keys', tablefmt='psql'))
+```
+
+
 ## Demo
 
 In this section, you can see the results of using this package for two simple 2D benchmarks. To run the benchmarks, run:
+
 ```python
 from pyticle.demo_run import demo_run
 demo_run()
