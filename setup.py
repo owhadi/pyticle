@@ -6,8 +6,8 @@ with open('README.md', 'r') as file:
 setuptools.setup(
     name='pyticle',
     version='0.0.3',
-    author='Moein Owhadi Kareshk',
-    author_email='moein.owhadi@gmail.com',
+    author='Moein Kareshk',
+    author_email='mkareshk@outlook.com',
     description='A Python Library for Particle Swarm Intelligence',
     long_description=long_description,
     long_description_content_type='text/markdown',
