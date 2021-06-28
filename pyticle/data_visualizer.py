@@ -1,24 +1,23 @@
-import os
 import glob
+import os
 from pathlib import Path
 
 import imageio
-import numpy as np
 import matplotlib.pyplot as plt
-from joblib import Parallel, delayed
+import numpy as np
 
 
 class DemoVisualizer:
     def __init__(
-        self,
-        cost_func: object,
-        particle_positions_hist: list,
-        global_best_position_hist: list,
-        low: float,
-        high: float,
-        n_jobs: int,
-        last_only: bool,
-        benchmark_name: str,
+            self,
+            cost_func: object,
+            particle_positions_hist: list,
+            global_best_position_hist: list,
+            low: float,
+            high: float,
+            n_jobs: int,
+            last_only: bool,
+            benchmark_name: str,
     ):
         """
         implements the demo visualizer class
@@ -49,7 +48,7 @@ class DemoVisualizer:
         Path(self.benchmark_name).mkdir(parents=True, exist_ok=True)
 
     def store_statistics(
-        self, fitness_min_hist: list, fitness_mean_hist: list, fitness_max_hist: list
+            self, fitness_min_hist: list, fitness_mean_hist: list, fitness_max_hist: list
     ):
         """
         plots the history of changes in the cost function over time
@@ -79,11 +78,6 @@ class DemoVisualizer:
             for counter in range(len(self.particle_positions_hist)):
                 print(f"{counter}/{len(self.particle_positions_hist)}")
                 self.store_figs_iter(counter)
-            # try:
-            #     Parallel(n_jobs=self.n_jobs) \
-            #         (delayed(self.store_figs_iter)(counter) for counter in range(len(self.particle_positions_hist)))
-            #     except Exception as e:
-            #         print(e)
 
     def store_figs_iter(self, counter: int):
         """

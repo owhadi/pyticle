@@ -1,13 +1,3 @@
-
-
-# from pyticle.benchmark import Benchmark
-# from pyticle.meta_search import MetaSearch
-# if __name__ == "__main__":
-#     # print("do not rin the module-level")
-
-#     ms = MetaSearch(Benchmark.ackley, 10, -32, 32)
-#     ms.search(try_num=50)
-
 from tabulate import tabulate
 
 from pyticle.benchmark import Benchmark

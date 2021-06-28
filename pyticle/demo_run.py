@@ -1,16 +1,14 @@
-from pyticle.swarm_optimization import SwarmOptimization
 from pyticle.benchmark import Benchmark
 from pyticle.data_visualizer import DemoVisualizer
+from pyticle.swarm_optimization import SwarmOptimization
 
 
 def demo_run():
-
     # benchmarks
     cost_functions = [Benchmark.x2, Benchmark.salustowicz, Benchmark.ackley]
     low_high_ranges = [[-10, 10], [0, 10], [-15, 30]]
 
     for i in range(len(cost_functions)):
-
         # range
         low_bound = low_high_ranges[i][0]
         high_bound = low_high_ranges[i][1]

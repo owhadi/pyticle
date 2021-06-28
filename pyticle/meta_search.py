@@ -4,7 +4,6 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 
-from pyticle.benchmark import Benchmark
 from pyticle.swarm_optimization import SwarmOptimization
 
 
@@ -16,12 +15,9 @@ class MetaSearch:
         self.high_bound = high_bound
 
     def search(self, try_num=2, n_jobs=10):
-
         input_list = []
-        result_list = []
 
         for i in range(try_num):
-
             np.random.seed(i)
 
             pn = int(np.random.randint(low=50, high=200, size=1))
@@ -51,10 +47,8 @@ class MetaSearch:
             delayed(self.optimization_iter)(**inp) for inp in input_list
         )
         return pd.DataFrame(result_list).sort_values(by="obj_val")
-        
 
     def optimization_iter(self, **kwargs):
-
         np.random.seed(kwargs["particle_num"] * kwargs["max_iter_num"])
 
         optimizer = SwarmOptimization(**kwargs)
